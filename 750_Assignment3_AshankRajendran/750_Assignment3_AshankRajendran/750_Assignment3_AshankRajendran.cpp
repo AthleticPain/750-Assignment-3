@@ -19,10 +19,11 @@
 FUNCTION_CALL;\
 OpenAL_ErrorCheck(FUNCTION_CALL)
 
-std::string audioFilePaths[2] = { "sounds/cannon.wav", "sounds/Explosion.wav" };
+std::string audioFilePaths[] = { "sounds/cannon.wav", "sounds/Explosion.wav", "sounds/missileGround.wav"};
+const int numberOfAudioTracks = sizeof(audioFilePaths) / sizeof(audioFilePaths[0]);
 
-//0 -> cannon, 1 -> explosion
-ALuint audioSources[2];
+//0 -> cannon, 1 -> explosion with tank, 2->Ground hit
+ALuint audioSources[numberOfAudioTracks];
 
 bool LoadAudioBuffer(std::string audioFilePath)
 {
@@ -55,22 +56,12 @@ bool LoadAudioBuffer(std::string audioFilePath)
 	return true;
 }
 
-void PlayAudio(int track)
+void PlayAudio(int trackIndex)
 {
 	//0->cannon
 	//1->explosion
-
-	switch (track)
-	{
-	case 0:
-		alec(alSourcePlay(audioSources[0]));
-		break;
-	case 1:
-		alec(alSourcePlay(audioSources[1]));
-		break;
-	default:
-		break;
-	}
+	//3->ground hit
+	alec(alSourcePlay(audioSources[trackIndex]));
 }
 
 using namespace std;
@@ -323,6 +314,7 @@ void  CalculateProjectileMotion(float timeStep, Tank shooter, Tank* allTanks, in
 
 	if (projectilePositionY < floorHeight || projectilePositionX > SCREENSIZE_X || projectilePositionX < 0)
 	{
+		PlayAudio(2);
 		currentPlayer = GetNextPlayerIndex(currentPlayer);
 		isShooting = false;
 	}
@@ -391,7 +383,7 @@ int main()
 	// create a sound source that play's our mono sound (from the sound buffer)
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < numberOfAudioTracks; i++)
 	{
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Create buffers that hold our sound data; these are shared between contexts and ar defined at a device level
@@ -567,7 +559,7 @@ int main()
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// clean up our resources!
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < numberOfAudioTracks; i++)
 	{
 		alec(alDeleteSources(1, &audioSources[i]));
 	}

@@ -1,0 +1,54 @@
+﻿  750_Assignment3_AshankRajendran.cpp
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(55,2): warning C4267: 'argument': conversion from 'size_t' to 'ALsizei', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(72,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(141,22): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(142,41): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(142,28): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(143,40): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(143,28): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(144,21): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(208,17): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(212,23): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(227,46): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(282,56): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(413,3): warning C4267: 'argument': conversion from 'size_t' to 'ALsizei', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(483,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(507,21): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(530,141): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(530,110): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(539,48): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(539,97): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(539,123): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\libraries_include\AudioFile\audiofile.h(1276,43): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file '750_Assignment3_AshankRajendran.cpp')
+      C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\libraries_include\AudioFile\audiofile.h(1276,43):
+      the template instantiation context (the oldest one first) is
+          C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(34,19):
+          see reference to class template instantiation 'AudioFile<float>' being compiled
+          C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\libraries_include\AudioFile\audiofile.h(320,1):
+          while compiling class template member function 'AudioFile<float>::AudioFile(void)'
+              C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(34,19):
+              see the first reference to 'AudioFile<float>::AudioFile' in 'LoadAudioBuffer'
+          C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\libraries_include\AudioFile\audiofile.h(340,1):
+          while compiling class template member function 'int AudioFile<float>::getNumChannels(void) const'
+              C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\libraries_include\AudioFile\audiofile.h(355,2):
+              see the first reference to 'AudioFile<float>::getNumChannels' in 'AudioFile<float>::isStereo'
+              C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(47,4):
+              see the first reference to 'AudioFile<float>::isStereo' in 'LoadAudioBuffer::<lambda_1>::operator ()'
+          C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\libraries_include\AudioFile\audiofile.h(1259,1):
+          while compiling class template member function 'int AudioFile<float>::getIndexOfChunk(std::vector<uint8_t,std::allocator<uint8_t>> &,const std::string &,int,AudioFile<float>::Endianness)'
+              C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\libraries_include\AudioFile\audiofile.h(540,23):
+              see the first reference to 'AudioFile<float>::getIndexOfChunk' in 'AudioFile<float>::decodeWaveFile'
+              C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\libraries_include\AudioFile\audiofile.h(515,3):
+              see the first reference to 'AudioFile<float>::decodeWaveFile' in 'AudioFile<float>::load'
+              C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(37,2):
+              see the first reference to 'AudioFile<float>::load' in 'LoadAudioBuffer'
+  
+  OpenAL_Test.cpp
+  Reference.cpp
+  Test.cpp
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 602 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  750_Assignment3_AshankRajendran.vcxproj -> C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\x64\Release\750_Assignment3_AshankRajendran.exe
