@@ -1,4 +1,5 @@
 #include <GLFW/glfw3.h>
+#include<AL/al.h>
 #include <iostream>
 
 using namespace std;
