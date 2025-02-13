@@ -49,9 +49,15 @@ float projectilePositionY;
 float projectileVelocityX;
 float projectileVelocityY;
 bool isShooting = false;
+bool isTankPoweringUp = false;
 vector<float> projectileTrailVertices;
 
 float floorHeight = 100;
+
+const float TankMinPower = 10;
+const float TankMaxPower = 100;
+const float TankMinAngle = 20;
+const float TankMaxAngle = 180 - TankMinAngle;
 
 struct Tank
 {
@@ -59,8 +65,8 @@ struct Tank
 	int yCoordinate = 0;
 	int tankSize = 0; //Radius of tank from center
 	bool isAlive = true;
-	float angle = 0;
-	float power = 100;
+	float angle = TankMinAngle;
+	float power = 0;
 };
 
 Tank* allTanks;
@@ -77,33 +83,33 @@ float NormalizeCoordinates_Y(float y)
 }
 
 // Draw a Tank
-void DrawTank(float cx, float cy, float r, float cannonAngle, int segments = 30)
+void DrawTank(float tankCenter_x, float tankCenter_y, float tankRadius, float cannonAngle, int segments = 30)
 {
-	glColor3f(0, 0, 1);
+	glColor3f(0.5, 0.5, 0.5);
 
 	// Scale tank size to OpenGL coordinates
-	float normalizedSize = (r / SCREENSIZE_X) * 2;
+	float normalizedSize = (tankRadius / SCREENSIZE_X) * 2;
 
 	//Draw the Tank
 	glBegin(GL_TRIANGLE_FAN);
-	glVertex2f(cx, cy);
+	glVertex2f(tankCenter_x, tankCenter_y);
 	for (int i = 0; i <= segments; i++)
 	{
 		float theta = 2.0f * PI * i / segments;
 		float x = normalizedSize * cos(theta);
 		float y = normalizedSize * sin(theta);
-		glVertex2f(cx + x, cy + y);
+		glVertex2f(tankCenter_x + x, tankCenter_y + y);
 	}
 	glEnd();
 
 	glPointSize(10);
 
 	glBegin(GL_POINTS);
-	glVertex2f(cx, cy);
+	glVertex2f(tankCenter_x, tankCenter_y);
 	glEnd();
 
 	glPushMatrix();
-	glTranslatef(cx, cy, 0.0f);
+	glTranslatef(tankCenter_x, tankCenter_y, 0.0f);
 	glRotatef(cannonAngle, 0.0f, 0.0f, 1.0f);
 
 	//Draw the tank's cannon
@@ -112,6 +118,24 @@ void DrawTank(float cx, float cy, float r, float cannonAngle, int segments = 30)
 	glVertex2f(normalizedSize * 1.5, -0.25 * normalizedSize);
 	glVertex2f(normalizedSize * 1.5, 0.25 * normalizedSize);
 	glVertex2f(0, 0.25 * normalizedSize);
+	glEnd();
+
+	glPopMatrix();
+}
+
+void DrawPowerBar(Tank currentTank, float horizontalScaleModifier)
+{
+	glColor3f(1, 0.5, 0);
+
+	glPushMatrix();
+	glTranslatef(NormalizeCoordinates_X(currentTank.xCoordinate - currentTank.tankSize), NormalizeCoordinates_Y(currentTank.yCoordinate + currentTank.tankSize + 1), 0);
+	glScalef(horizontalScaleModifier, 1, 1);
+
+	glBegin(GL_QUADS);
+	glVertex2f(0, 0);
+	glVertex2f(NormalizeCoordinates_X(currentTank.tankSize * 2) + 1, 0);
+	glVertex2f(NormalizeCoordinates_X(currentTank.tankSize * 2) + 1, 0.025);
+	glVertex2f(0, 0.025);
 	glEnd();
 
 	glPopMatrix();
@@ -146,7 +170,7 @@ void DrawProjectileTrail()
 //Draw the floor
 void DrawFloor()
 {
-	glColor3f(0, 1, 0);
+	glColor3f(0, 0.55, 0);
 	glBegin(GL_QUADS);
 	glVertex2f(NormalizeCoordinates_X(0), NormalizeCoordinates_Y(0));
 	glVertex2f(NormalizeCoordinates_X(SCREENSIZE_X), NormalizeCoordinates_Y(0));
@@ -157,39 +181,65 @@ void DrawFloor()
 
 void keyboardInputCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	if (action == GLFW_PRESS || action == GLFW_REPEAT)
+	if (key == GLFW_KEY_SPACE && !isShooting)
+	{
+		if (action == GLFW_PRESS)
+		{
+			//Set power to minimum power here
+			allTanks[currentPlayer].power = TankMinPower;
+			isTankPoweringUp = true;
+		}
+
+		if (action == GLFW_REPEAT)
+		{
+			//Increase power incrementally till max 150
+			allTanks[currentPlayer].power += 2;
+
+			if (allTanks[currentPlayer].power >= TankMaxPower)
+			{
+				allTanks[currentPlayer].power = TankMaxPower;
+			}
+		}
+
+		if (action == GLFW_RELEASE)
+		{
+			//Convert angle to radians
+			float angleInRadians = allTanks[currentPlayer].angle * PI / 180;
+
+			//Projectile initial positions 
+			//Ensuring it does not start exactly on the same position as the tank itself and shoot itself initially
+			projectilePositionX = allTanks[currentPlayer].xCoordinate + allTanks[currentPlayer].tankSize * cos(angleInRadians);
+			projectilePositionY = allTanks[currentPlayer].yCoordinate + allTanks[currentPlayer].tankSize * sin(angleInRadians);
+			projectileVelocityX = cos(angleInRadians) * allTanks[currentPlayer].power;
+			projectileVelocityY = sin(angleInRadians) * allTanks[currentPlayer].power;
+
+			PlayAudio(0);
+			isTankPoweringUp = false;
+			isShooting = true;
+		}
+	}
+	
+	if (action == GLFW_PRESS || action == GLFW_REPEAT && !isTankPoweringUp)
 	{
 		if (key == GLFW_KEY_LEFT && !isShooting)
 		{
 			allTanks[currentPlayer].angle += 1;
+			if (allTanks[currentPlayer].angle > TankMaxAngle)
+			{
+				allTanks[currentPlayer].angle = TankMaxAngle;
+			}
 		}
 
 		if (key == GLFW_KEY_RIGHT && !isShooting)
 		{
 			allTanks[currentPlayer].angle -= 1;
+			if (allTanks[currentPlayer].angle < TankMinAngle)
+			{
+				allTanks[currentPlayer].angle = TankMinAngle;
+			}
 		}
 	}
 
-	if (action == GLFW_PRESS && key == GLFW_KEY_SPACE && !isShooting)
-	{
-		//Increase power here
-	}
-
-	if (action == GLFW_RELEASE && key == GLFW_KEY_SPACE && !isShooting)
-	{
-		//Convert angle to radians
-		float angleInRadians = allTanks[currentPlayer].angle * PI / 180;
-
-		//Projectile initial positions 
-		//Ensuring it does not start exactly on the same position as the tank itself and shoot itself initially
-		projectilePositionX = allTanks[currentPlayer].xCoordinate + allTanks[currentPlayer].tankSize * cos(angleInRadians);
-		projectilePositionY = allTanks[currentPlayer].yCoordinate + allTanks[currentPlayer].tankSize * sin(angleInRadians);
-		projectileVelocityX = cos(angleInRadians) * allTanks[currentPlayer].power;
-		projectileVelocityY = sin(angleInRadians) * allTanks[currentPlayer].power;
-
-		PlayAudio(0);
-		isShooting = true;
-	}
 }
 
 //Returns the index of the player whose turn is next
@@ -394,8 +444,11 @@ int main()
 			break;
 		}
 
-		//Draw floor
-		DrawFloor();
+		//Draw Power bar
+		if (isTankPoweringUp)
+		{
+			DrawPowerBar(allTanks[currentPlayer], (allTanks[currentPlayer].power - TankMinPower) / (TankMaxPower - TankMinPower));
+		}
 
 		// Draw projectile
 		if (isShooting)
@@ -413,6 +466,9 @@ int main()
 				DrawTank(NormalizeCoordinates_X(allTanks[i].xCoordinate), NormalizeCoordinates_Y(allTanks[i].yCoordinate), allTanks[i].tankSize, allTanks[i].angle);
 			}
 		}
+
+		//Draw floor
+		DrawFloor();
 
 		glfwSwapBuffers(openGLwindow);
 		glfwPollEvents();
