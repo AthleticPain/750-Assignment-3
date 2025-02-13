@@ -1,1 +1,43 @@
-﻿  750_Assignment3_AshankRajendran.vcxproj -> C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\x64\Debug\750_Assignment3_AshankRajendran.exe
+﻿  750_Assignment3_AshankRajendran.cpp
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(41,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(111,22): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(112,41): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(112,28): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(113,40): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(113,28): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(114,21): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(219,56): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(337,3): warning C4267: 'argument': conversion from 'size_t' to 'ALsizei', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(370,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(377,21): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(403,141): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(403,110): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(413,48): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(413,97): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(413,123): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\libraries_include\AudioFile\audiofile.h(1276,43): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file '750_Assignment3_AshankRajendran.cpp')
+      C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\libraries_include\AudioFile\audiofile.h(1276,43):
+      the template instantiation context (the oldest one first) is
+          C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(316,20):
+          see reference to class template instantiation 'AudioFile<float>' being compiled
+          C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\libraries_include\AudioFile\audiofile.h(320,1):
+          while compiling class template member function 'AudioFile<float>::AudioFile(void)'
+              C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(316,20):
+              see the first reference to 'AudioFile<float>::AudioFile' in 'main'
+          C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\libraries_include\AudioFile\audiofile.h(340,1):
+          while compiling class template member function 'int AudioFile<float>::getNumChannels(void) const'
+              C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\libraries_include\AudioFile\audiofile.h(355,2):
+              see the first reference to 'AudioFile<float>::getNumChannels' in 'AudioFile<float>::isStereo'
+              C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(329,5):
+              see the first reference to 'AudioFile<float>::isStereo' in 'main::<lambda_1>::operator ()'
+          C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\libraries_include\AudioFile\audiofile.h(1259,1):
+          while compiling class template member function 'int AudioFile<float>::getIndexOfChunk(std::vector<uint8_t,std::allocator<uint8_t>> &,const std::string &,int,AudioFile<float>::Endianness)'
+              C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\libraries_include\AudioFile\audiofile.h(540,23):
+              see the first reference to 'AudioFile<float>::getIndexOfChunk' in 'AudioFile<float>::decodeWaveFile'
+              C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\libraries_include\AudioFile\audiofile.h(515,3):
+              see the first reference to 'AudioFile<float>::decodeWaveFile' in 'AudioFile<float>::load'
+              C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran\750_Assignment3_AshankRajendran.cpp(319,3):
+              see the first reference to 'AudioFile<float>::load' in 'main'
+  
+  750_Assignment3_AshankRajendran.vcxproj -> C:\Users\ashan\Documents\GitHub\750-Assignment-3\750_Assignment3_AshankRajendran\x64\Debug\750_Assignment3_AshankRajendran.exe

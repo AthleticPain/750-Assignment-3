@@ -19,42 +19,11 @@
 FUNCTION_CALL;\
 OpenAL_ErrorCheck(FUNCTION_CALL)
 
-std::string audioFilePaths[] = { "sounds/cannon.wav", "sounds/Explosion.wav", "sounds/missileGround.wav"};
+std::string audioFilePaths[] = { "sounds/cannon.wav", "sounds/Explosion.wav", "sounds/missileGround.wav" };
 const int numberOfAudioTracks = sizeof(audioFilePaths) / sizeof(audioFilePaths[0]);
 
 //0 -> cannon, 1 -> explosion with tank, 2->Ground hit
 ALuint audioSources[numberOfAudioTracks];
-
-bool LoadAudioBuffer(std::string audioFilePath)
-{
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Create buffers that hold our sound data; these are shared between contexts and ar defined at a device level
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	AudioFile<float> monoSoundFile;
-	std::vector<uint8_t> monoPCMDataBytes;
-
-	if (!monoSoundFile.load(audioFilePath))
-	{
-		std::cerr << "failed to load the test mono sound file" << std::endl;
-		return false;
-	}
-	monoSoundFile.writePCMToBuffer(monoPCMDataBytes); //remember, we added this function to the AudioFile library
-
-	auto convertFileToOpenALFormat = [](const AudioFile<float>& audioFile) {
-		int bitDepth = audioFile.getBitDepth();
-		if (bitDepth == 16)
-			return audioFile.isStereo() ? AL_FORMAT_STEREO16 : AL_FORMAT_MONO16;
-		else if (bitDepth == 8)
-			return audioFile.isStereo() ? AL_FORMAT_STEREO8 : AL_FORMAT_MONO8;
-		else
-			return -1; // this shouldn't happen!
-		};
-	ALuint monoSoundBuffer;
-	alec(alGenBuffers(1, &monoSoundBuffer));
-	alec(alBufferData(monoSoundBuffer, convertFileToOpenALFormat(monoSoundFile), monoPCMDataBytes.data(), monoPCMDataBytes.size(), monoSoundFile.getSampleRate()));
-	return true;
-}
 
 void PlayAudio(int trackIndex)
 {
@@ -80,6 +49,7 @@ float projectilePositionY;
 float projectileVelocityX;
 float projectileVelocityY;
 bool isShooting = false;
+vector<float> projectileTrailVertices;
 
 float floorHeight = 100;
 
@@ -147,6 +117,7 @@ void DrawTank(float cx, float cy, float r, float cannonAngle, int segments = 30)
 	glPopMatrix();
 }
 
+//Draw a point at the projectile's position
 void DrawProjectile(float x, float y)
 {
 	glColor3f(1, 0, 0);
@@ -156,6 +127,23 @@ void DrawProjectile(float x, float y)
 	glEnd();
 }
 
+//Draw a line trail for the projectile's path
+void DrawProjectileTrail()
+{
+	if (isShooting)
+	{
+		glColor3f(0, 0, 0);
+
+		glBegin(GL_LINE_STRIP);
+		for (int i = 0; i < projectileTrailVertices.size() - 1; i = i + 2)
+		{
+			glVertex2f(projectileTrailVertices[i], projectileTrailVertices[i + 1]);
+		}
+		glEnd();
+	}
+}
+
+//Draw the floor
 void DrawFloor()
 {
 	glColor3f(0, 1, 0);
@@ -175,10 +163,7 @@ void keyboardInputCallback(GLFWwindow* window, int key, int scancode, int action
 		{
 			allTanks[currentPlayer].angle += 1;
 		}
-	}
 
-	if (action == GLFW_PRESS || action == GLFW_REPEAT)
-	{
 		if (key == GLFW_KEY_RIGHT && !isShooting)
 		{
 			allTanks[currentPlayer].angle -= 1;
@@ -186,6 +171,11 @@ void keyboardInputCallback(GLFWwindow* window, int key, int scancode, int action
 	}
 
 	if (action == GLFW_PRESS && key == GLFW_KEY_SPACE && !isShooting)
+	{
+		//Increase power here
+	}
+
+	if (action == GLFW_RELEASE && key == GLFW_KEY_SPACE && !isShooting)
 	{
 		//Convert angle to radians
 		float angleInRadians = allTanks[currentPlayer].angle * PI / 180;
@@ -202,61 +192,7 @@ void keyboardInputCallback(GLFWwindow* window, int key, int scancode, int action
 	}
 }
 
-bool  CalculateProjectileMotion(Tank shooter, Tank* allTanks, int numberOfTanks, int angle, int power)
-{
-	//Define time step for projectile motion calculations
-	float timeStep = 0.01;
-	float elapsedTime = 0;
-
-	//Convert angle to radians
-	float angleInRadians = angle * 3.14 / 180;
-
-	//Projectile initial velocities
-	projectileVelocityX = power * cos(angleInRadians);
-	projectileVelocityY = power * sin(angleInRadians);
-
-	//Projectile initial positions 
-	//Ensuring it does not start exactly on the same position as the tank itself and shoot itself initially
-	projectilePositionX = shooter.xCoordinate + shooter.tankSize * cos(angleInRadians);
-	projectilePositionY = shooter.yCoordinate + shooter.tankSize * sin(angleInRadians);
-
-	while (projectilePositionY >= 0 && projectilePositionX < SCREENSIZE_X && projectilePositionX > 0)
-	{
-		//Update projectile position
-		projectilePositionX += projectileVelocityX * timeStep;
-		projectilePositionY += projectileVelocityY - 0.5 * ACCELERATION_DUE_TO_GRAVITY * timeStep * timeStep;
-
-		elapsedTime += timeStep;
-
-		std::cout << "\nProjectile position at elapsed time " << elapsedTime << ": (" << projectilePositionX << ", " << projectilePositionY << ")";
-
-		//Update vertical velocity
-		projectileVelocityY -= ACCELERATION_DUE_TO_GRAVITY * timeStep;
-
-		for (int i = 0; i < numberOfTanks; i++)
-		{
-			if (allTanks[i].isAlive == true)
-			{
-				//Calculate squared distance of projectile to tank
-				float distanceToTankSquared = (projectilePositionX - allTanks[i].xCoordinate) * (projectilePositionX - allTanks[i].xCoordinate) + (projectilePositionY - allTanks[i].yCoordinate) * (projectilePositionY - allTanks[i].yCoordinate);
-
-				std::cout << "\nProjectile distance from Tank " << i + 1 << " of size " << allTanks[i].tankSize << ": " << sqrt(distanceToTankSquared);
-
-				//Check if squared distance is less than squared tank size
-				//If true, set isAlive to false and return true
-				if (distanceToTankSquared <= (allTanks[i].tankSize * allTanks[i].tankSize))
-				{
-					allTanks[i].isAlive = false;
-					std::cout << "\n\nProjectile hit Tank " << i + 1 << "! The tank is destroyed!";
-					return true;
-				}
-			}
-		}
-	}
-
-	return false;
-}
-
+//Returns the index of the player whose turn is next
 int GetNextPlayerIndex(int currentPlayerIndex)
 {
 	int nextPlayerIndex = (currentPlayerIndex + 1) % numberOfTanks;
@@ -272,6 +208,7 @@ int GetNextPlayerIndex(int currentPlayerIndex)
 	return nextPlayerIndex;
 }
 
+//Updates the position of the projectile once, when called in the main game loop it will update continuosly
 void  CalculateProjectileMotion(float timeStep, Tank shooter, Tank* allTanks, int numberOfTanks, int angle, int power)
 {
 	//Define time step for projectile motion calculations
@@ -280,6 +217,9 @@ void  CalculateProjectileMotion(float timeStep, Tank shooter, Tank* allTanks, in
 	//Update projectile position
 	projectilePositionX += projectileVelocityX * timeStep;
 	projectilePositionY += projectileVelocityY * timeStep - 0.5 * ACCELERATION_DUE_TO_GRAVITY * timeStep * timeStep;
+
+	projectileTrailVertices.push_back(NormalizeCoordinates_X(projectilePositionX));
+	projectileTrailVertices.push_back(NormalizeCoordinates_Y(projectilePositionY));
 
 	elapsedTime += timeStep;
 
@@ -306,6 +246,7 @@ void  CalculateProjectileMotion(float timeStep, Tank shooter, Tank* allTanks, in
 				deathCount++;
 
 				PlayAudio(1);
+				projectileTrailVertices.clear();
 				currentPlayer = GetNextPlayerIndex(currentPlayer);
 				isShooting = false;
 			}
@@ -315,6 +256,7 @@ void  CalculateProjectileMotion(float timeStep, Tank shooter, Tank* allTanks, in
 	if (projectilePositionY < floorHeight || projectilePositionX > SCREENSIZE_X || projectilePositionX < 0)
 	{
 		PlayAudio(2);
+		projectileTrailVertices.clear();
 		currentPlayer = GetNextPlayerIndex(currentPlayer);
 		isShooting = false;
 	}
@@ -361,24 +303,6 @@ int main()
 	};
 	alec(alListenerfv(AL_ORIENTATION, forwardAndUpVectors));
 
-	
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// load a stereo file into a buffer
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//AudioFile<float> stereoSoundFile;
-	//if (!stereoSoundFile.load("sounds/Explosion.wav"))
-	//{
-	//	std::cerr << "failed to load the test stereo sound file" << std::endl;
-	//	return -1;
-	//}
-	//std::vector<uint8_t> stereoPCMDataBytes;
-	//stereoSoundFile.writePCMToBuffer(stereoPCMDataBytes); //remember, we added this function to the AudioFile library
-
-	//ALuint stereoSoundBuffer;
-	//alec(alGenBuffers(1, &stereoSoundBuffer));
-	//alec(alBufferData(stereoSoundBuffer, convertFileToOpenALFormat(stereoSoundFile), stereoPCMDataBytes.data(), stereoPCMDataBytes.size(), stereoSoundFile.getSampleRate()));
-
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// create a sound source that play's our mono sound (from the sound buffer)
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -422,43 +346,6 @@ int main()
 
 		alec(alDeleteBuffers(1, &monoSoundBuffer));
 	}
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// create a sound source for our stereo sound; note 3d positioning doesn't work with stereo files because
-	// stereo files are typically used for music. stereo files come out of both ears so it is hard to know
-	// what the sound should be doing based on 3d position data.
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//ALuint stereoSource;
-	//alec(alGenSources(1, &stereoSource));
-	////alec(alSource3f(stereoSource, AL_POSITION, 0.f, 0.f, 1.f)); //NOTE: this does not work like mono sound positions!
-	////alec(alSource3f(stereoSource, AL_VELOCITY, 0.f, 0.f, 0.f)); 
-	//alec(alSourcef(stereoSource, AL_PITCH, 1.f));
-	//alec(alSourcef(stereoSource, AL_GAIN, 1.f));
-	//alec(alSourcei(stereoSource, AL_LOOPING, AL_FALSE));
-	//alec(alSourcei(stereoSource, AL_BUFFER, stereoSoundBuffer));
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//// play the mono sound source
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//alec(alSourcePlay(monoSource));
-	//ALint sourceState;
-	//alec(alGetSourcei(monoSource, AL_SOURCE_STATE, &sourceState));
-	//while (sourceState == AL_PLAYING)
-	//{
-	//	//basically loop until we're done playing the mono sound source
-	//	alec(alGetSourcei(monoSource, AL_SOURCE_STATE, &sourceState));
-	//}
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//// play the stereo sound source after the mono!
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	//alec(alSourcePlay(stereoSource));
-	//alec(alGetSourcei(stereoSource, AL_SOURCE_STATE, &sourceState));
-	//while (sourceState == AL_PLAYING)
-	//{
-	//	//basically loop until we're done playing the mono sound source
-	//	alec(alGetSourcei(stereoSource, AL_SOURCE_STATE, &sourceState));
-	//}
 
 	// Initialize GLFW
 	if (!glfwInit()) return -1;
@@ -468,15 +355,15 @@ int main()
 	glfwMakeContextCurrent(openGLwindow);
 	glfwSetKeyCallback(openGLwindow, keyboardInputCallback);
 
-	cout << "\nEnter the number of tanks (2, 10):";
-	cin >> numberOfTanks;
-	//numberOfTanks = 2;
+	while (numberOfTanks < 2 || numberOfTanks > 10)
+	{
+		cout << "\nEnter the number of tanks (2, 10):";
+		cin >> numberOfTanks;
 
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//// play the mono sound source
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//PlayAudio(0);
-	//PlayAudio(1);
+		//If user inputs anything other than an integer, exit
+		if (std::cin.fail())
+			return -1;
+	}
 
 	allTanks = new Tank[numberOfTanks];
 
@@ -487,26 +374,9 @@ int main()
 	{
 		int newRandomXPos = rand() % SCREENSIZE_X; //Random tank x coordinate
 
-		//Check if x position is within another tanks radius
-		//bool isTankOverlapping = true;
-		//while (isTankOverlapping = true)
-		//{
-		//	isTankOverlapping = false;
-		//	for (int j = 0; j < i; j++)
-		//	{
-		//		cout << "Tank distance between " << i << " and " << j << ": " << abs(newRandomXPos - allTanks[j].xCoordinate) << ", Tank size : " << allTanks[j].tankSize;
-		//		if (abs(newRandomXPos - allTanks[j].xCoordinate) < allTanks[j].tankSize);
-		//		{
-		//			isTankOverlapping = true;
-		//			newRandomXPos = (newRandomXPos + allTanks[j].tankSize) % SCREENSIZE_X;
-		//			break;
-		//		}
-		//	}
-		//}
-
 		int newRandomYPos = floorHeight; //Random tank y coordinate
 		int randomTankSize = 10 + rand() % 21; //Random Tank size from 10 to 20 pixels
-		//int randomTankSize = 1; //Tank size is 1
+
 		allTanks[i] = { newRandomXPos, newRandomYPos, randomTankSize };
 
 		cout << "\nTank " << i + 1 << " of size " << randomTankSize << " pixels, spawned at coordinates (" << newRandomXPos << ", " << newRandomYPos << ").";
@@ -517,21 +387,25 @@ int main()
 	{
 		glClearColor(1.0, 1.0, 1.0, 0.0);
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		//If only one remaining tank, exit the main game loop
 		if (deathCount >= numberOfTanks - 1)
 		{
 			break;
 		}
 
+		//Draw floor
 		DrawFloor();
 
-		// Draw Projectile
+		// Draw projectile
 		if (isShooting)
 		{
 			CalculateProjectileMotion(0.01f, allTanks[currentPlayer], allTanks, numberOfTanks, allTanks[currentPlayer].angle, allTanks[currentPlayer].power);
 			DrawProjectile(NormalizeCoordinates_X(projectilePositionX), NormalizeCoordinates_Y(projectilePositionY));
+			DrawProjectileTrail();
 		}
 
-		// Draw Tanks
+		// Draw the tanks
 		for (int i = 0; i < numberOfTanks; i++)
 		{
 			if (allTanks[i].isAlive)

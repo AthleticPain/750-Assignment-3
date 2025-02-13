@@ -7,8 +7,7 @@
       "RelativeMoniker": "D:0:0:{AF0AB221-5566-4707-8D2B-D8B091CCAF87}|750_Assignment3_AshankRajendran\\750_Assignment3_AshankRajendran.vcxproj|solutionrelative:750_Assignment3_AshankRajendran\\750_Assignment3_AshankRajendran.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{AF0AB221-5566-4707-8D2B-D8B091CCAF87}|750_Assignment3_AshankRajendran\\750_Assignment3_AshankRajendran.vcxproj|C:\\Users\\ashan\\Documents\\GitHub\\750-Assignment-3\\750_Assignment3_AshankRajendran\\750_Assignment3_AshankRajendran\\Reference.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{AF0AB221-5566-4707-8D2B-D8B091CCAF87}|750_Assignment3_AshankRajendran\\750_Assignment3_AshankRajendran.vcxproj|solutionrelative:750_Assignment3_AshankRajendran\\Reference.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.41.34120\\include\\vector||{3B902123-F8A7-4915-9F01-361F908088D0}|"
     },
     {
       "AbsoluteMoniker": "D:0:0:{AF0AB221-5566-4707-8D2B-D8B091CCAF87}|750_Assignment3_AshankRajendran\\750_Assignment3_AshankRajendran.vcxproj|C:\\Users\\ashan\\Documents\\GitHub\\750-Assignment-3\\750_Assignment3_AshankRajendran\\750_Assignment3_AshankRajendran\\OpenAL_Test.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -17,6 +16,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{AF0AB221-5566-4707-8D2B-D8B091CCAF87}|750_Assignment3_AshankRajendran\\750_Assignment3_AshankRajendran.vcxproj|C:\\Users\\ashan\\Documents\\GitHub\\750-Assignment-3\\750_Assignment3_AshankRajendran\\750_Assignment3_AshankRajendran\\Test.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{AF0AB221-5566-4707-8D2B-D8B091CCAF87}|750_Assignment3_AshankRajendran\\750_Assignment3_AshankRajendran.vcxproj|solutionrelative:750_Assignment3_AshankRajendran\\Test.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AF0AB221-5566-4707-8D2B-D8B091CCAF87}|750_Assignment3_AshankRajendran\\750_Assignment3_AshankRajendran.vcxproj|C:\\Users\\ashan\\Documents\\GitHub\\750-Assignment-3\\750_Assignment3_AshankRajendran\\750_Assignment3_AshankRajendran\\Reference.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{AF0AB221-5566-4707-8D2B-D8B091CCAF87}|750_Assignment3_AshankRajendran\\750_Assignment3_AshankRajendran.vcxproj|solutionrelative:750_Assignment3_AshankRajendran\\Reference.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ashan\\Documents\\GitHub\\750-Assignment-3\\750_Assignment3_AshankRajendran\\libraries_include\\AudioFile\\AudioFile.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -30,8 +33,35 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "750_Assignment3_AshankRajendran.cpp",
+              "DocumentMoniker": "C:\\Users\\ashan\\Documents\\GitHub\\750-Assignment-3\\750_Assignment3_AshankRajendran\\750_Assignment3_AshankRajendran\\750_Assignment3_AshankRajendran.cpp",
+              "RelativeDocumentMoniker": "750_Assignment3_AshankRajendran\\750_Assignment3_AshankRajendran.cpp",
+              "ToolTip": "C:\\Users\\ashan\\Documents\\GitHub\\750-Assignment-3\\750_Assignment3_AshankRajendran\\750_Assignment3_AshankRajendran\\750_Assignment3_AshankRajendran.cpp",
+              "RelativeToolTip": "750_Assignment3_AshankRajendran\\750_Assignment3_AshankRajendran.cpp",
+              "ViewState": "AgIAAKEAAAAAAAAAAAAAALAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-02-12T00:38:06.523Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "vector",
+              "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.41.34120\\include\\vector",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.41.34120\\include\\vector",
+              "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.41.34120\\include\\vector",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.41.34120\\include\\vector",
+              "ViewState": "AgIAAFMHAAAAAAAAAAAQwF8HAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-02-13T17:48:12.891Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 2,
@@ -40,7 +70,7 @@
               "RelativeDocumentMoniker": "750_Assignment3_AshankRajendran\\OpenAL_Test.cpp",
               "ToolTip": "C:\\Users\\ashan\\Documents\\GitHub\\750-Assignment-3\\750_Assignment3_AshankRajendran\\750_Assignment3_AshankRajendran\\OpenAL_Test.cpp",
               "RelativeToolTip": "750_Assignment3_AshankRajendran\\OpenAL_Test.cpp",
-              "ViewState": "AgIAADkAAAAAAAAAAABBwKcAAAADAAAAAAAAAA==",
+              "ViewState": "AgIAAF0AAAAAAAAAAAAAAKcAAAADAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-02-13T02:47:18.878Z",
               "EditorCaption": ""
@@ -53,26 +83,14 @@
               "RelativeDocumentMoniker": "750_Assignment3_AshankRajendran\\Test.cpp",
               "ToolTip": "C:\\Users\\ashan\\Documents\\GitHub\\750-Assignment-3\\750_Assignment3_AshankRajendran\\750_Assignment3_AshankRajendran\\Test.cpp",
               "RelativeToolTip": "750_Assignment3_AshankRajendran\\Test.cpp",
-              "ViewState": "AgIAAAMAAAAAAAAAAADwvyQAAAADAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-02-12T00:53:23.441Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "750_Assignment3_AshankRajendran.cpp",
-              "DocumentMoniker": "C:\\Users\\ashan\\Documents\\GitHub\\750-Assignment-3\\750_Assignment3_AshankRajendran\\750_Assignment3_AshankRajendran\\750_Assignment3_AshankRajendran.cpp",
-              "RelativeDocumentMoniker": "750_Assignment3_AshankRajendran\\750_Assignment3_AshankRajendran.cpp",
-              "ToolTip": "C:\\Users\\ashan\\Documents\\GitHub\\750-Assignment-3\\750_Assignment3_AshankRajendran\\750_Assignment3_AshankRajendran\\750_Assignment3_AshankRajendran.cpp",
-              "RelativeToolTip": "750_Assignment3_AshankRajendran\\750_Assignment3_AshankRajendran.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-02-12T00:38:06.523Z",
+              "WhenOpened": "2025-02-12T00:53:23.441Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "Reference.cpp",
               "DocumentMoniker": "C:\\Users\\ashan\\Documents\\GitHub\\750-Assignment-3\\750_Assignment3_AshankRajendran\\750_Assignment3_AshankRajendran\\Reference.cpp",
               "RelativeDocumentMoniker": "750_Assignment3_AshankRajendran\\Reference.cpp",
@@ -85,13 +103,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "AudioFile.h",
               "DocumentMoniker": "C:\\Users\\ashan\\Documents\\GitHub\\750-Assignment-3\\750_Assignment3_AshankRajendran\\libraries_include\\AudioFile\\AudioFile.h",
               "RelativeDocumentMoniker": "libraries_include\\AudioFile\\AudioFile.h",
               "ToolTip": "C:\\Users\\ashan\\Documents\\GitHub\\750-Assignment-3\\750_Assignment3_AshankRajendran\\libraries_include\\AudioFile\\AudioFile.h",
               "RelativeToolTip": "libraries_include\\AudioFile\\AudioFile.h",
-              "ViewState": "AgIAAC0AAAAAAAAAAAAAAEYAAAACAAAAAAAAAA==",
+              "ViewState": "AgIAAIABAAAAAAAAAAAAAEYAAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-02-13T03:01:11.308Z"
             }
