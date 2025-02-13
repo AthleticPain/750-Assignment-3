@@ -142,6 +142,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="750_Assignment3_AshankRajendran.cpp" />
+    <ClCompile Include="OpenAL_Test.cpp" />
     <ClCompile Include="Reference.cpp" />
     <ClCompile Include="Test.cpp" />
   </ItemGroup>

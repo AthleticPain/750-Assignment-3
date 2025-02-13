@@ -1,6 +1,77 @@
 #include <GLFW/glfw3.h>
 #include<AL/al.h>
+#include<AL/alc.h>
+#include<AudioFile/audiofile.h>
 #include <iostream>
+#include<string>
+
+//OpenAL error checking
+#define OpenAL_ErrorCheck(message)\
+{\
+	ALenum error = alGetError();\
+	if( error != AL_NO_ERROR)\
+	{\
+		std::cerr << "OpenAL Error: " << error << " with call for " << #message << std::endl;\
+	}\
+}
+
+#define alec(FUNCTION_CALL)\
+FUNCTION_CALL;\
+OpenAL_ErrorCheck(FUNCTION_CALL)
+
+std::string audioFilePaths[2] = { "sounds/cannon.wav", "sounds/Explosion.wav" };
+
+//0 -> cannon, 1 -> explosion
+ALuint audioSources[2];
+
+bool LoadAudioBuffer(std::string audioFilePath)
+{
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Create buffers that hold our sound data; these are shared between contexts and ar defined at a device level
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	AudioFile<float> monoSoundFile;
+	std::vector<uint8_t> monoPCMDataBytes;
+
+	if (!monoSoundFile.load(audioFilePath))
+	{
+		std::cerr << "failed to load the test mono sound file" << std::endl;
+		return false;
+	}
+	monoSoundFile.writePCMToBuffer(monoPCMDataBytes); //remember, we added this function to the AudioFile library
+
+	auto convertFileToOpenALFormat = [](const AudioFile<float>& audioFile) {
+		int bitDepth = audioFile.getBitDepth();
+		if (bitDepth == 16)
+			return audioFile.isStereo() ? AL_FORMAT_STEREO16 : AL_FORMAT_MONO16;
+		else if (bitDepth == 8)
+			return audioFile.isStereo() ? AL_FORMAT_STEREO8 : AL_FORMAT_MONO8;
+		else
+			return -1; // this shouldn't happen!
+		};
+	ALuint monoSoundBuffer;
+	alec(alGenBuffers(1, &monoSoundBuffer));
+	alec(alBufferData(monoSoundBuffer, convertFileToOpenALFormat(monoSoundFile), monoPCMDataBytes.data(), monoPCMDataBytes.size(), monoSoundFile.getSampleRate()));
+	return true;
+}
+
+void PlayAudio(int track)
+{
+	//0->cannon
+	//1->explosion
+
+	switch (track)
+	{
+	case 0:
+		alec(alSourcePlay(audioSources[0]));
+		break;
+	case 1:
+		alec(alSourcePlay(audioSources[1]));
+		break;
+	default:
+		break;
+	}
+}
 
 using namespace std;
 
@@ -134,6 +205,8 @@ void keyboardInputCallback(GLFWwindow* window, int key, int scancode, int action
 		projectilePositionY = allTanks[currentPlayer].yCoordinate + allTanks[currentPlayer].tankSize * sin(angleInRadians);
 		projectileVelocityX = cos(angleInRadians) * allTanks[currentPlayer].power;
 		projectileVelocityY = sin(angleInRadians) * allTanks[currentPlayer].power;
+
+		PlayAudio(0);
 		isShooting = true;
 	}
 }
@@ -241,6 +314,7 @@ void  CalculateProjectileMotion(float timeStep, Tank shooter, Tank* allTanks, in
 				cout << "\n\nProjectile hit Tank " << i + 1 << "! The tank is destroyed!";
 				deathCount++;
 
+				PlayAudio(1);
 				currentPlayer = GetNextPlayerIndex(currentPlayer);
 				isShooting = false;
 			}
@@ -250,13 +324,150 @@ void  CalculateProjectileMotion(float timeStep, Tank shooter, Tank* allTanks, in
 	if (projectilePositionY < floorHeight || projectilePositionX > SCREENSIZE_X || projectilePositionX < 0)
 	{
 		currentPlayer = GetNextPlayerIndex(currentPlayer);
-
 		isShooting = false;
 	}
 }
 
 int main()
 {
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// find the default audio device
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	const ALCchar* defaultDeviceString = alcGetString(/*device*/nullptr, ALC_DEFAULT_DEVICE_SPECIFIER);
+	ALCdevice* device = alcOpenDevice(defaultDeviceString);
+	if (!device)
+	{
+		std::cerr << "failed to get the default device for OpenAL" << std::endl;
+		return -1;
+	}
+	std::cout << "OpenAL Device: " << alcGetString(device, ALC_DEVICE_SPECIFIER) << std::endl;
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Create an OpenAL audio context from the device
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	ALCcontext* context = alcCreateContext(device, /*attrlist*/ nullptr);
+	OpenAL_ErrorCheck(context);
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Activate this context so that OpenAL state modifications are applied to the context
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	if (!alcMakeContextCurrent(context))
+	{
+		std::cerr << "failed to make the OpenAL context the current context" << std::endl;
+		return -1;
+	}
+	OpenAL_ErrorCheck("Make context current");
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Create a listener in 3d space (ie the player); (there always exists as listener, you just configure data on it)
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	alec(alListener3f(AL_POSITION, 0.f, 0.f, 0.f));
+	alec(alListener3f(AL_VELOCITY, 0.f, 0.f, 0.f));
+	ALfloat forwardAndUpVectors[] = {
+		/*forward = */ 1.f, 0.f, 0.f,
+		/* up = */ 0.f, 1.f, 0.f
+	};
+	alec(alListenerfv(AL_ORIENTATION, forwardAndUpVectors));
+
+	
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// load a stereo file into a buffer
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//AudioFile<float> stereoSoundFile;
+	//if (!stereoSoundFile.load("sounds/Explosion.wav"))
+	//{
+	//	std::cerr << "failed to load the test stereo sound file" << std::endl;
+	//	return -1;
+	//}
+	//std::vector<uint8_t> stereoPCMDataBytes;
+	//stereoSoundFile.writePCMToBuffer(stereoPCMDataBytes); //remember, we added this function to the AudioFile library
+
+	//ALuint stereoSoundBuffer;
+	//alec(alGenBuffers(1, &stereoSoundBuffer));
+	//alec(alBufferData(stereoSoundBuffer, convertFileToOpenALFormat(stereoSoundFile), stereoPCMDataBytes.data(), stereoPCMDataBytes.size(), stereoSoundFile.getSampleRate()));
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// create a sound source that play's our mono sound (from the sound buffer)
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	for (int i = 0; i < 2; i++)
+	{
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		// Create buffers that hold our sound data; these are shared between contexts and ar defined at a device level
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		AudioFile<float> monoSoundFile;
+		std::vector<uint8_t> monoPCMDataBytes;
+
+		if (!monoSoundFile.load(audioFilePaths[i]))
+		{
+			std::cerr << "failed to load the test mono sound file" << std::endl;
+			return -1;
+		}
+		monoSoundFile.writePCMToBuffer(monoPCMDataBytes); //remember, we added this function to the AudioFile library
+
+		auto convertFileToOpenALFormat = [](const AudioFile<float>& audioFile) {
+			int bitDepth = audioFile.getBitDepth();
+			if (bitDepth == 16)
+				return audioFile.isStereo() ? AL_FORMAT_STEREO16 : AL_FORMAT_MONO16;
+			else if (bitDepth == 8)
+				return audioFile.isStereo() ? AL_FORMAT_STEREO8 : AL_FORMAT_MONO8;
+			else
+				return -1; // this shouldn't happen!
+			};
+		ALuint monoSoundBuffer;
+		alec(alGenBuffers(1, &monoSoundBuffer));
+		alec(alBufferData(monoSoundBuffer, convertFileToOpenALFormat(monoSoundFile), monoPCMDataBytes.data(), monoPCMDataBytes.size(), monoSoundFile.getSampleRate()));
+
+		alec(alGenSources(1, &audioSources[i]));
+		alec(alSource3f(audioSources[i], AL_POSITION, 1.f, 0.f, 0.f));
+		alec(alSource3f(audioSources[i], AL_VELOCITY, 0.f, 0.f, 0.f));
+		alec(alSourcef(audioSources[i], AL_PITCH, 1.f));
+		alec(alSourcef(audioSources[i], AL_GAIN, 1.f));
+		alec(alSourcei(audioSources[i], AL_LOOPING, AL_FALSE));
+		alec(alSourcei(audioSources[i], AL_BUFFER, monoSoundBuffer));
+
+		alec(alDeleteBuffers(1, &monoSoundBuffer));
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// create a sound source for our stereo sound; note 3d positioning doesn't work with stereo files because
+	// stereo files are typically used for music. stereo files come out of both ears so it is hard to know
+	// what the sound should be doing based on 3d position data.
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//ALuint stereoSource;
+	//alec(alGenSources(1, &stereoSource));
+	////alec(alSource3f(stereoSource, AL_POSITION, 0.f, 0.f, 1.f)); //NOTE: this does not work like mono sound positions!
+	////alec(alSource3f(stereoSource, AL_VELOCITY, 0.f, 0.f, 0.f)); 
+	//alec(alSourcef(stereoSource, AL_PITCH, 1.f));
+	//alec(alSourcef(stereoSource, AL_GAIN, 1.f));
+	//alec(alSourcei(stereoSource, AL_LOOPING, AL_FALSE));
+	//alec(alSourcei(stereoSource, AL_BUFFER, stereoSoundBuffer));
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//// play the mono sound source
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//alec(alSourcePlay(monoSource));
+	//ALint sourceState;
+	//alec(alGetSourcei(monoSource, AL_SOURCE_STATE, &sourceState));
+	//while (sourceState == AL_PLAYING)
+	//{
+	//	//basically loop until we're done playing the mono sound source
+	//	alec(alGetSourcei(monoSource, AL_SOURCE_STATE, &sourceState));
+	//}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//// play the stereo sound source after the mono!
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	//alec(alSourcePlay(stereoSource));
+	//alec(alGetSourcei(stereoSource, AL_SOURCE_STATE, &sourceState));
+	//while (sourceState == AL_PLAYING)
+	//{
+	//	//basically loop until we're done playing the mono sound source
+	//	alec(alGetSourcei(stereoSource, AL_SOURCE_STATE, &sourceState));
+	//}
+
 	// Initialize GLFW
 	if (!glfwInit()) return -1;
 
@@ -268,6 +479,12 @@ int main()
 	cout << "\nEnter the number of tanks (2, 10):";
 	cin >> numberOfTanks;
 	//numberOfTanks = 2;
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//// play the mono sound source
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//PlayAudio(0);
+	//PlayAudio(1);
 
 	allTanks = new Tank[numberOfTanks];
 
@@ -346,6 +563,17 @@ int main()
 		}
 	}
 	cout << "\n\nGame Over! Tank " << winningTankIndex + 1 << " is the winner!\n";
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// clean up our resources!
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	for (int i = 0; i < 2; i++)
+	{
+		alec(alDeleteSources(1, &audioSources[i]));
+	}
+	alcMakeContextCurrent(nullptr);
+	alcDestroyContext(context);
+	alcCloseDevice(device);
 
 	glfwTerminate();
 	return 0;
